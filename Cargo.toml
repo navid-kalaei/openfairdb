@@ -9,6 +9,7 @@ license = "AGPL-3.0-or-later"
 edition = "2018"
 
 [patch.crates-io]
+ofdb-app = { path = "ofdb-app" }
 ofdb-boundary = { path = "ofdb-boundary" }
 ofdb-core = { path = "ofdb-core" }
 ofdb-entities = { path = "ofdb-entities" }
@@ -17,6 +18,7 @@ ofdb-gateways = { path = "ofdb-gateways" }
 [workspace]
 members = [
   ".",
+  "ofdb-app",
   "ofdb-boundary",
   "ofdb-core",
   "ofdb-entities",
@@ -40,6 +42,7 @@ lazy_static = "*"
 log = "*"
 num-traits = "*"
 maud = { version = "*", optional = true, features = ["rocket"] }
+ofdb-app = { version = "*", optional = true }
 ofdb-boundary = "*"
 ofdb-core = "*"
 ofdb-entities = "*"
@@ -64,11 +67,18 @@ uuid = { version = "*", features = ["v4"] }
 rand = "*"
 ofdb-boundary = { version = "*", features = ["extra-derive"] }
 
+[build-dependencies]
+walkdir = "2"
+
 [features]
-default = ["email","frontend"]
+default = ["email","frontend","app"]
 email = []
 frontend = ["maud"]
+app = ["ofdb-app"]
 
 [profile.release]
 lto = true
 codegen-units = 1
+
+[profile.release.package.ofdb-app]
+opt-level = 'z'
